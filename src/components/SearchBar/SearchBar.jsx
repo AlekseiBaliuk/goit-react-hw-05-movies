@@ -20,18 +20,6 @@ export const SearchBar = ({ onSubmit }) => {
     setMovieName('');
   };
 
-  // const handleSubmit = e => {
-  //   e.preventDefault();
-
-  //   if (movieName === '') {
-  //     console.log('enter something');
-  //     return;
-  //   }
-
-  //   onSubmit(movieName);
-  //   setMovieName('');
-  // };
-
   return (
     <Container>
       <form onSubmit={handleSubmit}>

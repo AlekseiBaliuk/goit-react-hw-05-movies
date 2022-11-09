@@ -8,7 +8,6 @@ const Cast = () => {
   const { movieId } = useParams();
 
   useEffect(() => {
-    // fetchCast(movieId).then(res => setCast(res.cast));
     const getCast = async () => {
       const response = await fetchCast(movieId);
 
