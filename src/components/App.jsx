@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+// import { lazy } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Home from 'pages/Home/Home';
 import Movies from 'pages/Movies/Movies';
@@ -7,8 +7,8 @@ import Reviews from 'components/Reviews/Reviews';
 import Cast from 'components/Cast/Cast';
 import SharedLayout from './SharedLayout/SharedLayout';
 
-const createAsyncComponent = path => lazy(() => import(path));
-// const Home = createAsyncComponent('../pages/Home');
+// const createAsyncComponent = path => lazy(() => import(path));
+// const Home = createAsyncComponent('../ages/Home');
 // const Movies = createAsyncComponent('../pages/Movies');
 // const MovieDetails = createAsyncComponent('../pages/MovieDetails');
 // const Cast = createAsyncComponent('./Cast');

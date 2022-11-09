@@ -10,7 +10,7 @@ const Movies = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const query = searchParams.get('query') ?? '';
+  const query = searchParams.get('query');
 
   const handleFormSubmit = search => {
     setSearchParams({ query: search });
