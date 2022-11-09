@@ -1,13 +1,23 @@
-import { object } from 'prop-types';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import {
+  Container,
+  MovieDescription,
+  SubTitle,
+  DescrItem,
+  SubText,
+  Link,
+} from './MovieDetails.styled';
 import { fetchMovieById } from 'services/fetchApi';
+import { BackLink } from 'components/BackLink/BackLink';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
   const { movieId } = useParams();
-  //   const movie = fetchMovieById(movieId);
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? '/home';
 
   useEffect(() => {
     const getMovieById = async movieId => {
@@ -16,7 +26,6 @@ export const MovieDetails = () => {
         setMovie(movieData);
       } catch (error) {
         setError(error);
-        // console.log(error);
       }
     };
     getMovieById(movieId);
@@ -31,43 +40,62 @@ export const MovieDetails = () => {
 
   return (
     <main>
+      {error && <p>Try again</p>}
       {movie ? (
-        <div>
-          <div>
-            <img
-              src={`${poster(movie.poster_path)}`}
-              alt={`${movie.title || movie.original_title || movie.name}`}
-            />
-          </div>
-          <div>
+        <>
+          <BackLink to={backLinkHref}>Back</BackLink>
+          <Container>
             <div>
-              <h2>{`${movie.title || movie.original_title || movie.name}`}</h2>
-              <ul>
-                <li>
-                  <p>Vote / Votes</p>
-                  <p>
-                    <span>{`${movie.vote_average.toFixed(1)}`}</span>
-                    <span> / </span>
-                    <span>{`${movie.vote_count}`}</span>
-                  </p>
-                </li>
-                <li>
-                  <p>Popularity</p>
-                  <p>{`${movie.popularity.toFixed(1)}`}</p>
-                </li>
-                <li>
-                  <p>Original title</p>
-                  <p>{`${
-                    movie.title || movie.original_title || movie.name
-                  }`}</p>
-                </li>
-                <li>
-                  <p>{`${movie.genres.map(({ name }) => name).join(', ')}`}</p>
-                </li>
-              </ul>
+              <img
+                src={`${poster(movie.poster_path)}`}
+                alt={`${movie.title || movie.original_title || movie.name}`}
+              />
             </div>
-          </div>
-        </div>
+            <div>
+              <MovieDescription>
+                <h2>
+                  {`${movie.title || movie.original_title || movie.name} `}
+                  {`(${parseInt(movie.release_date)})`}
+                </h2>
+                <ul>
+                  <DescrItem>
+                    <SubTitle>Vote / Votes</SubTitle>
+                    <SubText>
+                      <span>{`${movie.vote_average.toFixed(1)}`}</span>
+                      <span> / </span>
+                      <span>{`${movie.vote_count}`}</span>
+                    </SubText>
+                  </DescrItem>
+                  <DescrItem>
+                    <SubTitle>Popularity</SubTitle>
+                    <SubText>{`${movie.popularity.toFixed(1)}`}</SubText>
+                  </DescrItem>
+                  <DescrItem>
+                    <SubTitle>Overview</SubTitle>
+                    <SubText>{`${movie.overview}`}</SubText>
+                  </DescrItem>
+                  <DescrItem>
+                    <SubTitle>Genres</SubTitle>
+                    <SubText>{`${movie.genres
+                      .map(({ name }) => name)
+                      .join(', ')}`}</SubText>
+                  </DescrItem>
+                </ul>
+              </MovieDescription>
+            </div>
+          </Container>
+          <ul>
+            <li>
+              <Link to="cast">Cast</Link>
+            </li>
+            <li>
+              <Link to="reviews">Reviews</Link>
+            </li>
+          </ul>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Outlet />
+          </Suspense>
+        </>
       ) : (
         <p>Wops, try again</p>
       )}
@@ -75,10 +103,4 @@ export const MovieDetails = () => {
   );
 };
 
-{
-  /* <div>
-          <img src={poster(movie.poster_path)} alt={movie.title} />
-          <h3>{movie.title}</h3>
-          <p>{parseInt(movie.release_date)}</p>
-        </div> */
-}
+export default MovieDetails;
