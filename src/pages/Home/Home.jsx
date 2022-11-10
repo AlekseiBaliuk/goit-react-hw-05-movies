@@ -15,6 +15,7 @@ const Home = () => {
       getTrendingMovies();
     } catch (error) {
       setError(error);
+    } finally {
     }
   }, []);
 

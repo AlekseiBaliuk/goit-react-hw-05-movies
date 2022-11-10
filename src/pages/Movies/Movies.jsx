@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { fetchMovieByName } from 'services/fetchApi';
+
 import { MoviesList } from 'components/MoviesList/MoviesList';
 
 const Movies = () => {
@@ -22,41 +23,20 @@ const Movies = () => {
     async function getMovieById() {
       try {
         const movieData = await fetchMovieByName(query);
-        if (movieData.length === 0) {
-          console.log(`${query} not found`);
+        setMovies(movieData.results);
+
+        if (movieData.results.length === 0) {
+          alert(`${query} not found`);
+          return;
         } else {
           navigate(`/movies/?query=${query}`);
         }
-        setMovies(movieData.results);
       } catch (error) {
         setError(error);
       }
     }
     getMovieById();
   }, [navigate, query]);
-
-  // const handleFormSubmit = async name => {
-  //   // if (query === '') return;
-
-  //   try {
-  //     const movieData = await fetchMovieByName(name);
-  //     if (movieData.length === 0) {
-  //       console.log(`${name} not found`);
-  //       return;
-  //     }
-  //     if (movieData.length !== 0) {
-  //       navigate(`/movies/?query=${name}`);
-  //     }
-  //     setMovies(movieData.results);
-  //   } catch (error) {
-  //     setError(error);
-  //   }
-  // };
-
-  // const updateQueryString = name => {
-  //   const nextParams = name !== '' ? { name } : {};
-  //   setSearchParams(nextParams);
-  // };
 
   return (
     <main>

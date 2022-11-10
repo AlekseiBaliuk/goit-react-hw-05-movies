@@ -15,17 +15,22 @@ import { BackLink } from 'components/BackLink/BackLink';
 const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
+  const [showLoade, setShowLoader] = useState(false);
   const { movieId } = useParams();
   const location = useLocation();
+
   const backLinkHref = location.state?.from ?? '/home';
 
   useEffect(() => {
     const getMovieById = async movieId => {
       try {
+        setShowLoader(true);
         const movieData = await fetchMovieById(movieId);
         setMovie(movieData);
       } catch (error) {
         setError(error);
+      } finally {
+        setShowLoader(false);
       }
     };
     getMovieById(movieId);
@@ -41,7 +46,8 @@ const MovieDetails = () => {
   return (
     <main>
       {error && <p>Try again</p>}
-      {movie ? (
+      {showLoade && <div>Load info</div>}
+      {movie && !showLoade && (
         <>
           <BackLink to={backLinkHref}>Back</BackLink>
           <Container>
@@ -86,18 +92,23 @@ const MovieDetails = () => {
           </Container>
           <ul>
             <li>
-              <Link to="cast">Cast</Link>
+              <Link to="cast" state={{ from: location.state?.from ?? '/cast' }}>
+                Cast
+              </Link>
             </li>
             <li>
-              <Link to="reviews">Reviews</Link>
+              <Link
+                to="reviews"
+                state={{ from: location.state?.from ?? '/reviews' }}
+              >
+                Reviews
+              </Link>
             </li>
           </ul>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={null}>
             <Outlet />
           </Suspense>
         </>
-      ) : (
-        <p>Wops, try again</p>
       )}
     </main>
   );

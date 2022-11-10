@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Input, Container, Button } from './SearchBar.styled';
+// import { toast, ToastContainer } from 'react-toastify';
 
 export const SearchBar = ({ onSubmit }) => {
   const [movieName, setMovieName] = useState('');
@@ -12,7 +14,9 @@ export const SearchBar = ({ onSubmit }) => {
     e.preventDefault();
 
     if (movieName === '') {
-      console.log('enter something');
+      // toast.info('Please enter something');
+      alert('Please enter something');
+      // console.log('enter something');
       return;
     }
 
@@ -28,4 +32,8 @@ export const SearchBar = ({ onSubmit }) => {
       </form>
     </Container>
   );
+};
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };
