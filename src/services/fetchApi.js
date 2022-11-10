@@ -34,7 +34,7 @@ export async function fetchMovieByName(movieName) {
     query: movieName,
   };
 
-  const response = await axios.get(`/search/movie/`, { params });
+  const response = await axios.get(`/search/movie`, { params });
   const data = response.data;
 
   return data;

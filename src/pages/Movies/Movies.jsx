@@ -20,7 +20,7 @@ const Movies = () => {
 
   useEffect(() => {
     if (query === null) return;
-    async function getMovieById() {
+    async function getMovieByName() {
       try {
         const movieData = await fetchMovieByName(query);
         setMovies(movieData.results);
@@ -35,7 +35,7 @@ const Movies = () => {
         setError(error);
       }
     }
-    getMovieById();
+    getMovieByName();
   }, [navigate, query]);
 
   return (
